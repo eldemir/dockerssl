@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  apache2:
+    build: .
+    hostname: www.go2qr.com
+    restart: always
+    volumes_from:
+      - letsencryptstore
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      LETS_ENCRYPT_EMAIL: "admın@go2qr.com"
+      LETS_ENCRYPT_DOMAINS: "go2qr.com,www.go2qr.com"
+    labels:
+      io.enonic.backup.data: "/etc/letsencrypt,/var/lib/letsencrypt"
+
+  letsencryptstore:
+    image: busybox
+    volumes:
+      - "/etc/letsencrypt"
+      - "/var/lib/letsencrypt"
